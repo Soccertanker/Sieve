@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "bitmap.h"
 
 #if 0
-#define BM_IS_VALID(bm) (!bm || !(bm->ar) ? -1 : 0)
+#define BM_IS_VALID(bm) (bm && bm->ar)
 #else
 #define BM_IS_VALID(bm) 1
 #endif
@@ -51,6 +52,8 @@ int bitmap_destroy(bitmap_t bm)
 	if (!BM_IS_VALID(bm))
 		return -1;
 
+	free(bm->ar);
+
 	free(bm);
 
 	return 0;
@@ -63,7 +66,7 @@ int bitmap_destroy(bitmap_t bm)
 #define BM_INT_IND(ind) (ind % BM_BITS_PER_INT)
 
 /* Make a mask for a bit of an integer. */
-#define BM_MASK(ind) (BM_INT_IND(ind) << ind)
+#define BM_MASK(ind) (1 << BM_INT_IND(ind))
 
 /* Set a bit by or'ing the bitmap with a mask that contains a single 1. */
 #define BM_SET_BIT(bm, ind) (bm->ar[BM_AR_IND(ind)] |= BM_MASK(ind))
