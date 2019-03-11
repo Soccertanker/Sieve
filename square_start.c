@@ -22,13 +22,18 @@ bitmap_t bm;
  */
 static void mark_multiples(int prime, int max)
 {
-	for (int currNum = prime; currNum < max; currNum += prime) {
+	long long int primeLong = (long long int)prime;
+	long long int start = primeLong * primeLong;
+	if (start > max)
+		return;
+
+	for (int currNum = start; currNum < max; currNum += prime) {
 		bitmap_set_bit(bm, currNum);
 	}
 }
 
 /**
- * primes_up_to_basic - Compute primes up to a number.
+ * primes_up_to_square_start - Compute primes up to a number.
  *
  * This function computes the primes of every integer up to a primeMax.
  *
@@ -37,19 +42,21 @@ static void mark_multiples(int prime, int max)
  * Returns -1 if primesMax is not valid, the number of primes encountered
  * otherwise.
  */
-static int primes_up_to_basic(int primeMax)
+static int primes_up_to_square_start(int primeMax)
 {
 	int numPrimes = 0;
 
 	if (primeMax < 2)
 		return -1;
 
+	int halfLimit = primeMax / 2;
+
 	/* Iterate through numbers, checking if they are prime. */
 	for (int currNum = 2; currNum < primeMax; currNum++) {
 
-		/* Mark all multiples of a prime number. */
+		/* Mark all multiples of a prime number, up to half the max. */
 		if (IS_PRIME(currNum)) {
-			mark_multiples(currNum, primeMax);
+			mark_multiples(currNum, halfLimit);
 			numPrimes++;
 		}
 	}
@@ -70,7 +77,7 @@ int main(int argc, char **argv)
 	bm = bitmap_create(primeMax);
 
 	clock_t startTime = clock();
-	int numPrimes = primes_up_to_basic(primeMax);
+	int numPrimes = primes_up_to_square_start(primeMax);
 	clock_t endTime = clock();
 
 	bitmap_destroy(bm);
