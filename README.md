@@ -8,7 +8,7 @@ to the Sieve of Eratosthenes.
 One must run make and then run an executable with the command line argument
 indicating the upper limit for prime numbers.
 
-```
+```bash
 make
 
 ./<executable> <prime_limit>
