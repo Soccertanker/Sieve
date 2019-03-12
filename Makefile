@@ -1,7 +1,8 @@
 # Target programs
 programs := basic.x	\
 	half_limit.x	\
-	square_start.x
+	square_start.x	\
+	no_evens.x
 
 # Default rule
 all: $(programs)

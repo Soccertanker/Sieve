@@ -51,14 +51,24 @@ static int primes_up_to_square_start(int primeMax)
 
 	int halfLimit = primeMax / 2;
 
-	/* Iterate through numbers, checking if they are prime. */
-	for (int currNum = 2; currNum < primeMax; currNum++) {
+	/* Begin searching for prime numbers at p=2. */
+	int currNum = 2;
 
-		/* Mark all multiples of a prime number, up to half the max. */
+	/* Iterate through numbers, checking if they are prime. */
+	for (; currNum < halfLimit; currNum++) {
+
+		/* Mark all multiples of a prime number. */
 		if (IS_PRIME(currNum)) {
-			mark_multiples(currNum, halfLimit);
+			mark_multiples(currNum, primeMax);
 			numPrimes++;
 		}
+	}
+
+
+	/* Search for any remaining primes between halfLimit and primeMax. */
+	for (; currNum < primeMax; currNum++) {
+		if (IS_PRIME(currNum))
+			numPrimes++;
 	}
 
 	return numPrimes;
